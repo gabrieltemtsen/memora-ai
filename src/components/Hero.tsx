@@ -12,6 +12,7 @@ import {
   createIcon,
   IconProps,
   useColorModeValue,
+  AspectRatio,
 } from '@chakra-ui/react'
 
 export default function Hero() {
@@ -37,20 +38,23 @@ export default function Hero() {
                 position: 'absolute',
                 bottom: 1,
                 left: 0,
-                bg: 'red.400',
+                bg: 'blue.800',
                 zIndex: -1,
               }}>
-              Write once,
+              Bridging,
             </Text>
             <br />
-            <Text as={'span'} color={'red.400'}>
-              use everywhere!
+            <Text as={'span'} color={'pink.400'}>
+              Beyond Life!
             </Text>
           </Heading>
           <Text color={'gray.500'}>
-            Snippy is a rich coding snippets app that lets you create your own code
-            snippets, categorize them, and even sync them in the cloud so you can use them
-            anywhere. All that is free!
+          A breakthrough platform for preserving and sharing important memories
+           across generations. It provides an immersive trip for both users who wish to develop
+            their Ai presence beyond death, leaving a lasting legacy, and users who want to commune
+             with the departed, cherishing and learning from these saved memories. MEMORA-AI bridges 
+             the time-space gap by combining intuitive design, AI interactions,
+           and a strong ethical framework, linking hearts via shared experiences and tales.
           </Text>
           <Stack spacing={{ base: 4, sm: 6 }} direction={{ base: 'column', sm: 'row' }}>
             <Button
@@ -58,9 +62,9 @@ export default function Hero() {
               size={'lg'}
               fontWeight={'normal'}
               px={6}
-              colorScheme={'red'}
-              bg={'red.400'}
-              _hover={{ bg: 'red.500' }}>
+              colorScheme={'blue'}
+              bg={'blue.400'}
+              _hover={{ bg: 'blue.500' }}>
               Get started
             </Button>
             <Button
@@ -86,7 +90,6 @@ export default function Hero() {
             top={'-20%'}
             left={0}
             zIndex={-1}
-            color={useColorModeValue('red.50', 'red.400')}
           />
           <Box
             position={'relative'}
@@ -107,16 +110,17 @@ export default function Hero() {
               top={'50%'}
               transform={'translateX(-50%) translateY(-50%)'}
             />
-            <Image
+            {/* <Image
               alt={'Hero Image'}
               fit={'cover'}
               align={'center'}
               w={'100%'}
               h={'100%'}
-              src={
-                'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80'
-              }
-            />
+              src={'/ai-hero.opng' }
+            /> */}
+            <AspectRatio   >
+            <iframe width="960" height="215" src="https://www.youtube.com/embed/xe-JnlzGuqM?si=Ya4m4cq9bSt1p6gM" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+</AspectRatio>
           </Box>
         </Flex>
       </Stack>

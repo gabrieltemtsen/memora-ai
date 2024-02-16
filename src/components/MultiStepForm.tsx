@@ -27,7 +27,7 @@ const Form1 = () => {
   return (
     <>
       <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
-        User Registration
+        Create your AI Presence
       </Heading>
       <Flex>
         <FormControl mr="5%">
@@ -54,19 +54,14 @@ const Form1 = () => {
 
       <FormControl>
         <FormLabel htmlFor="password" fontWeight={'normal'} mt="2%">
-          Password
+          AI Visibility
         </FormLabel>
-        <InputGroup size="md">
-          <Input
-            pr="4.5rem"
-            type={show ? 'text' : 'password'}
-            placeholder="Enter password"
-          />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? 'Hide' : 'Show'}
-            </Button>
-          </InputRightElement>
+        <InputGroup size="md" >
+          <Select required placeholder='choose visibility: like limited usage of your AI presence?'>
+            <option value='public'>public</option>
+            <option value='private'>priivate</option>
+         </Select>
+          
         </InputGroup>
       </FormControl>
     </>
@@ -213,10 +208,10 @@ const Form3 = () => {
   return (
     <>
       <Heading w="100%" textAlign={'center'} fontWeight="normal">
-        Social Handles
+        You
       </Heading>
       <SimpleGrid columns={1} spacing={6}>
-        <FormControl as={GridItem} colSpan={[3, 2]}>
+        {/* <FormControl as={GridItem} colSpan={[3, 2]}>
           <FormLabel
             fontSize="sm"
             fontWeight="md"
@@ -243,7 +238,7 @@ const Form3 = () => {
               rounded="md"
             />
           </InputGroup>
-        </FormControl>
+        </FormControl> */}
 
         <FormControl id="email" mt={1}>
           <FormLabel
@@ -253,10 +248,10 @@ const Form3 = () => {
             _dark={{
               color: 'gray.50',
             }}>
-            About
+            About you
           </FormLabel>
           <Textarea
-            placeholder="you@example.com"
+            placeholder="Take your time to write a brief description about yourself. The more Info provided the more accurate we'd be."
             rows={3}
             shadow="sm"
             focusBorderColor="brand.400"
@@ -265,7 +260,7 @@ const Form3 = () => {
             }}
           />
           <FormHelperText>
-            Brief description for your profile. URLs are hyperlinked.
+            Your Data would not be shared to Third parties.
           </FormHelperText>
         </FormControl>
       </SimpleGrid>
@@ -324,8 +319,8 @@ export default function Multistep() {
             {step === 3 ? (
               <Button
                 w="7rem"
-                colorScheme="red"
-                variant="solid"
+                bg={"blue.500"}
+               
                 onClick={() => {
                   toast({
                     title: 'Account created.',

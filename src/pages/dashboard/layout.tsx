@@ -37,11 +37,13 @@ import {
   
   interface LinkItemProps {
     name: string
+    url: string
     icon: IconType
   }
   
   interface NavItemProps extends FlexProps {
     icon: IconType
+    url: string
     children: React.ReactNode
   }
   
@@ -54,10 +56,10 @@ import {
   }
   
   const LinkItems: Array<LinkItemProps> = [
-    { name: 'Home', icon: FiHome },
-    { name: 'Create Memories', icon: FiTrendingUp },
-    { name: 'Memora Hub', icon: FiCompass },
-    { name: 'Settings', icon: FiSettings },
+    { name: 'Home', icon: FiHome, url: '/dashboard' },
+    { name: 'Create Memories', icon: FiTrendingUp, url: '/dashboard/create-memories'  },
+    { name: 'Memories', icon: FiCompass, url: '/dashboard/memories'  },
+    { name: 'Settings', icon: FiSettings, url: '/dashboard/settings'},
   ]
   
   const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
@@ -80,19 +82,22 @@ import {
           <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
         </Flex>
         {LinkItems.map((link) => (
-          <NavItem key={link.name} icon={link.icon}>
+          <>
+          
+          <NavItem key={link.name} icon={link.icon} url={link.url}>
             {link.name}
           </NavItem>
+          </>
         ))}
       </Box>
     )
   }
   
-  const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+  const NavItem = ({ url, icon, children, ...rest }: NavItemProps) => {
     return (
       <Box
         as="a"
-        href="#"
+        href={url}
         style={{ textDecoration: 'none' }}
         _focus={{ boxShadow: 'none' }}>
         <Flex
@@ -152,11 +157,10 @@ import {
         </Text>
   
         <HStack spacing={{ base: '0', md: '6' }}>
-          <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
           <Flex alignItems={'center'}>
             <Menu>
               <MenuButton py={2} _focus={{ boxShadow: 'none' }}>
-                <HStack>
+                <HStack mr={7}>
                   <Avatar
                     size={'sm'}
                     src={
@@ -169,9 +173,7 @@ import {
                     spacing="1px"
                     ml="2">
                     <Text fontSize="sm">Justina Clark</Text>
-                    <Text fontSize="xs" color="gray.600">
-                      Admin
-                    </Text>
+                    
                   </VStack>
                   <Box display={{ base: 'none', md: 'flex' }}>
                     <FiChevronDown />
@@ -181,11 +183,9 @@ import {
               <MenuList
                 bg={useColorModeValue('white', 'gray.900')}
                 borderColor={useColorModeValue('gray.200', 'gray.700')}>
-                <MenuItem>Profile</MenuItem>
                 <MenuItem>Settings</MenuItem>
-                <MenuItem>Billing</MenuItem>
                 <MenuDivider />
-                <MenuItem>Sign out</MenuItem>
+                <MenuItem>Log out</MenuItem>
               </MenuList>
             </Menu>
           </Flex>

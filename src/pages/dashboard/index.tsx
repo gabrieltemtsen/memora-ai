@@ -24,7 +24,7 @@ const index = () => {
           What would you like to do today?
         </Text>
 
-        <Box display={'flex'} flexDirection={'row'} gap={4} mt={10} p={'4px'}>
+        <Box display={'flex'}  flexWrap={'wrap'} gap={4} mt={10} p={'4px'}>
 
         <Tooltip maxW={'220px'} hasArrow label='Communicate with AI to gather data about you' bg='blue.600'>
           <Link href='/dashboard/create-memories'>
