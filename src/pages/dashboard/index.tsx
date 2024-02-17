@@ -1,8 +1,21 @@
-import React from 'react'
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useEffect } from 'react'
+
 import SidebarWithHeader from './layout'
 import { Box,Text, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Heading, Button, Tooltip, Link } from '@chakra-ui/react'
+import { useAuthentication } from '@/lib/hooks/use-authentication';
+import { useRouter } from 'next/router';
 
-const index = () => {
+export default function index ()  {
+  const router = useRouter();
+  const { user, isAuthenticated, isLoading } = useAuthentication();
+
+  useEffect(() => {
+    if (!isAuthenticated && !isLoading) {
+      router.push('/'); 
+    }
+  }, [isAuthenticated, isLoading, router]);
+
   return (
     <SidebarWithHeader>
       <Breadcrumb>
@@ -54,4 +67,3 @@ const index = () => {
   )
 }
 
-export default index

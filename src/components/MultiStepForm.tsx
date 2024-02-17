@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
 import {
   Progress,
   Box,
@@ -7,271 +7,83 @@ import {
   Heading,
   Flex,
   FormControl,
-  GridItem,
   FormLabel,
   Input,
   Select,
-  SimpleGrid,
-  InputLeftAddon,
-  InputGroup,
   Textarea,
   FormHelperText,
-  InputRightElement,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
+import { useAuthentication } from '@/lib/hooks/use-authentication';
 
-import { useToast } from '@chakra-ui/react'
+const Multistep = () => {
+  const { user, isAuthenticated, isLoading } = useAuthentication();
+  const toast = useToast();
+  const [step, setStep] = useState(1);
+  const [progress, setProgress] = useState(33.33);
 
-const Form1 = () => {
-  const [show, setShow] = useState(false)
-  const handleClick = () => setShow(!show)
-  return (
-    <>
-      <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
-        Create your AI Presence
-      </Heading>
-      <Flex>
-        <FormControl mr="5%">
-          <FormLabel htmlFor="first-name" fontWeight={'normal'}>
-            First name
-          </FormLabel>
-          <Input id="first-name" placeholder="First name" />
-        </FormControl>
+  // Form state to hold collected data
+  const [formData, setFormData] = useState<User>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    visibility: '',
+    country: '',
+    streetAddress: '',
+    city: '',
+    postalCode: '',
+    about: '',
+  });
 
-        <FormControl>
-          <FormLabel htmlFor="last-name" fontWeight={'normal'}>
-            Last name
-          </FormLabel>
-          <Input id="last-name" placeholder="First name" />
-        </FormControl>
-      </Flex>
-      <FormControl mt="2%">
-        <FormLabel htmlFor="email" fontWeight={'normal'}>
-          Email address
-        </FormLabel>
-        <Input id="email" type="email" />
-        <FormHelperText>We&apos;ll never share your email.</FormHelperText>
-      </FormControl>
+  useEffect(() => {
+    if (user) {
+      // Prefill form data with user's details if available
+      setFormData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        visibility: '',
+        country: user.country || '',
+        streetAddress: user.address || '',
+        city: user.city || '',
+        postalCode: user.postalCode || '',
+        about: '',
+      });
+    }
+  }, [user]);
 
-      <FormControl>
-        <FormLabel htmlFor="password" fontWeight={'normal'} mt="2%">
-          AI Visibility
-        </FormLabel>
-        <InputGroup size="md" >
-          <Select required placeholder='choose visibility: like limited usage of your AI presence?'>
-            <option value='public'>public</option>
-            <option value='private'>priivate</option>
-         </Select>
-          
-        </InputGroup>
-      </FormControl>
-    </>
-  )
-}
+  // Function to handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-const Form2 = () => {
-  return (
-    <>
-      <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
-        User Details
-      </Heading>
-      <FormControl as={GridItem} colSpan={[6, 3]}>
-        <FormLabel
-          htmlFor="country"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}>
-          Country / Region
-        </FormLabel>
-        <Select
-          id="country"
-          name="country"
-          autoComplete="country"
-          placeholder="Select option"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md">
-          <option>United States</option>
-          <option>Canada</option>
-          <option>Mexico</option>
-        </Select>
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={6}>
-        <FormLabel
-          htmlFor="street_address"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
-          Street address
-        </FormLabel>
-        <Input
-          type="text"
-          name="street_address"
-          id="street_address"
-          autoComplete="street-address"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
-        <FormLabel
-          htmlFor="city"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
-          City
-        </FormLabel>
-        <Input
-          type="text"
-          name="city"
-          id="city"
-          autoComplete="city"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="state"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
-          State / Province
-        </FormLabel>
-        <Input
-          type="text"
-          name="state"
-          id="state"
-          autoComplete="state"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="postal_code"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
-          ZIP / Postal
-        </FormLabel>
-        <Input
-          type="text"
-          name="postal_code"
-          id="postal_code"
-          autoComplete="postal-code"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-    </>
-  )
-}
-
-const Form3 = () => {
-  return (
-    <>
-      <Heading w="100%" textAlign={'center'} fontWeight="normal">
-        You
-      </Heading>
-      <SimpleGrid columns={1} spacing={6}>
-        {/* <FormControl as={GridItem} colSpan={[3, 2]}>
-          <FormLabel
-            fontSize="sm"
-            fontWeight="md"
-            color="gray.700"
-            _dark={{
-              color: 'gray.50',
-            }}>
-            Website
-          </FormLabel>
-          <InputGroup size="sm">
-            <InputLeftAddon
-              bg="gray.50"
-              _dark={{
-                bg: 'gray.800',
-              }}
-              color="gray.500"
-              rounded="md">
-              http://
-            </InputLeftAddon>
-            <Input
-              type="tel"
-              placeholder="www.example.com"
-              focusBorderColor="brand.400"
-              rounded="md"
-            />
-          </InputGroup>
-        </FormControl> */}
-
-        <FormControl id="email" mt={1}>
-          <FormLabel
-            fontSize="sm"
-            fontWeight="md"
-            color="gray.700"
-            _dark={{
-              color: 'gray.50',
-            }}>
-            About you
-          </FormLabel>
-          <Textarea
-            placeholder="Take your time to write a brief description about yourself. The more Info provided the more accurate we'd be."
-            rows={3}
-            shadow="sm"
-            focusBorderColor="brand.400"
-            fontSize={{
-              sm: 'sm',
-            }}
-          />
-          <FormHelperText>
-            Your Data would not be shared to Third parties.
-          </FormHelperText>
-        </FormControl>
-      </SimpleGrid>
-    </>
-  )
-}
-
-export default function Multistep() {
-  const toast = useToast()
-  const [step, setStep] = useState(1)
-  const [progress, setProgress] = useState(33.33)
+  const handleSubmit = () => {
+    // Check if any field is empty
+    const emptyFields = Object.keys(formData).filter(key => !formData[key]);
+  
+    // If there are empty fields, display a toast message
+    if (emptyFields.length > 0) {
+      toast({
+        title: 'Form submission failed.',
+        description: `Please fill in the following fields: ${emptyFields.join(', ')}.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      // All fields are filled, proceed with form submission
+      console.log(formData);
+  
+      toast({
+        title: 'Form submitted.',
+        description: 'Data collected from the form.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <>
@@ -282,37 +94,175 @@ export default function Multistep() {
         maxWidth={800}
         p={6}
         m="10px auto"
-        as="form">
+        as="form"
+      >
         <Progress hasStripe value={progress} mb="5%" mx="5%" isAnimated></Progress>
-        {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 />}
+        {step === 1 ? (
+          <>
+            <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
+              Create your AI Presence
+            </Heading>
+            <Flex>
+              <FormControl mr="5%">
+                <FormLabel htmlFor="first-name" fontWeight={'normal'}>
+                  First name
+                </FormLabel>
+                <Input
+                  id="first-name"
+                  placeholder="First name"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel htmlFor="last-name" fontWeight={'normal'}>
+                  Last name
+                </FormLabel>
+                <Input
+                  id="last-name"
+                  placeholder="Last name"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+            </Flex>
+            <FormControl mt="2%">
+              <FormLabel htmlFor="email" fontWeight={'normal'}>
+                Email address
+              </FormLabel>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Email address"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+              <FormHelperText>We will never share your email.</FormHelperText>
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="visibility" fontWeight={'normal'} mt="2%">
+                AI Visibility
+              </FormLabel>
+              <Select
+                id="visibility"
+                placeholder="Select visibility"
+                name="visibility"
+                value={formData.visibility}
+                onChange={handleInputChange}
+              >
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </Select>
+            </FormControl>
+          </>
+        ) : step === 2 ? (
+          <>
+            <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
+              User Details
+            </Heading>
+            <FormControl>
+              <FormLabel htmlFor="country" fontWeight={'normal'}>
+                Country
+              </FormLabel>
+              <Input
+                id="country"
+                placeholder="Country"
+                name="country"
+                value={formData.country}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="street-address" fontWeight={'normal'}>
+                Street Address
+              </FormLabel>
+              <Input
+                id="street-address"
+                placeholder="Street Address"
+                name="streetAddress"
+                value={formData.streetAddress}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="city" fontWeight={'normal'}>
+                City
+              </FormLabel>
+              <Input
+                id="city"
+                placeholder="City"
+                name="city"
+                value={formData.city}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="postal-code" fontWeight={'normal'}>
+                Postal Code
+              </FormLabel>
+              <Input
+                id="postal-code"
+                placeholder="Postal Code"
+                name="postalCode"
+                value={formData.postalCode}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+          </>
+        ) : (
+          <>
+            <Heading w="100%" textAlign={'center'} fontWeight="normal">
+              About You
+            </Heading>
+            <FormControl id="about" mt={1}>
+              <FormLabel htmlFor="about" fontWeight={'normal'}>
+                About you
+              </FormLabel>
+              <Textarea
+                id="about"
+                placeholder="Take your time to write a brief description about yourself..."
+                name="about"
+                value={formData.about}
+                onChange={handleInputChange}
+              />
+              <FormHelperText>Your data will not be shared with third parties.</FormHelperText>
+            </FormControl>
+          </>
+        )}
         <ButtonGroup mt="5%" w="100%">
           <Flex w="100%" justifyContent="space-between">
             <Flex>
               <Button
                 onClick={() => {
-                  setStep(step - 1)
-                  setProgress(progress - 33.33)
+                  setStep(step - 1);
+                  setProgress(progress - 33.33);
                 }}
                 isDisabled={step === 1}
                 colorScheme="teal"
                 variant="solid"
                 w="7rem"
-                mr="5%">
+                mr="5%"
+              >
                 Back
               </Button>
               <Button
                 w="7rem"
                 isDisabled={step === 3}
                 onClick={() => {
-                  setStep(step + 1)
+                  setStep(step + 1);
                   if (step === 3) {
-                    setProgress(100)
+                    setProgress(100);
                   } else {
-                    setProgress(progress + 33.33)
+                    setProgress(progress + 33.33);
                   }
                 }}
                 colorScheme="teal"
-                variant="outline">
+                variant="outline"
+              >
                 Next
               </Button>
             </Flex>
@@ -320,16 +270,8 @@ export default function Multistep() {
               <Button
                 w="7rem"
                 bg={"blue.500"}
-               
-                onClick={() => {
-                  toast({
-                    title: 'Account created.',
-                    description: "We've created your account for you.",
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                  })
-                }}>
+                onClick={handleSubmit}
+              >
                 Submit
               </Button>
             ) : null}
@@ -337,5 +279,19 @@ export default function Multistep() {
         </ButtonGroup>
       </Box>
     </>
-  )
+  );
+};
+
+export default Multistep;
+
+interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  visibility: string;
+  country: string;
+  streetAddress: string;
+  city: string;
+  postalCode: string;
+  about: string;
 }
