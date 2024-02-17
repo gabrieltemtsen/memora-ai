@@ -1,3 +1,4 @@
+import { useAuthentication } from '@/lib/hooks/use-authentication';
 import {
   Container,
   Stack,
@@ -16,6 +17,8 @@ import {
 } from '@chakra-ui/react'
 
 export default function Hero() {
+  const { user, isAuthenticated, isLoading } = useAuthentication();
+
   return (
     <Container maxW={'7xl'}>
       <Stack
@@ -49,15 +52,19 @@ export default function Hero() {
             </Text>
           </Heading>
           <Text color={'gray.500'}>
-          A breakthrough platform for preserving and sharing important memories
-           across generations. It provides an immersive trip for both users who wish to develop
+          We preserve and share important memories
+           across generations. we provide an immersive trip for both users who wish to develop
             their Ai presence beyond death, leaving a lasting legacy, and users who want to commune
-             with the departed, cherishing and learning from these saved memories. MEMORA-AI bridges 
+             with the departed, cherishing and learning from these saved memories.MEMORA-AI bridges 
              the time-space gap by combining intuitive design, AI interactions,
            and a strong ethical framework, linking hearts via shared experiences and tales.
           </Text>
           <Stack spacing={{ base: 4, sm: 6 }} direction={{ base: 'column', sm: 'row' }}>
-            <Button
+            {isAuthenticated && user ? (
+              <>
+               <Button
+               as={'a'}
+               href='/dashboard'
               rounded={'full'}
               size={'lg'}
               fontWeight={'normal'}
@@ -65,8 +72,24 @@ export default function Hero() {
               colorScheme={'blue'}
               bg={'blue.400'}
               _hover={{ bg: 'blue.500' }}>
-              Get started
+             Dashboard
             </Button>
+              </>
+            ): (
+              <>
+               <Button
+              rounded={'full'}
+              size={'lg'}
+              fontWeight={'normal'}
+              px={6}
+              colorScheme={'blue'}
+              bg={'blue.400'}
+              _hover={{ bg: 'blue.500' }}>
+             Get Started
+            </Button>
+              </>
+            )}
+           
             <Button
               rounded={'full'}
               size={'lg'}

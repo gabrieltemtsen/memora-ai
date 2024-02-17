@@ -13,6 +13,14 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Avatar,
+  Center,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Badge,
 } from '@chakra-ui/react'
 import {
   HamburgerIcon,
@@ -20,9 +28,98 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@chakra-ui/icons'
+import { clientLogin } from '@/lib/auth/client-login'
+import { useAuthentication } from '@/lib/hooks/use-authentication';
+import { signOut } from 'next-auth/react';
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure()
+  const { user, isAuthenticated, isLoading } = useAuthentication();
+  const logout = async() => {
+    await signOut();
+  };
+
+  const renderLoginState = () => {
+    if (isLoading) {
+      return <p>Loading..</p>;
+    }
+
+    // if (error) {
+    //   console.log(error)
+    //   return (
+    //     <div>
+    //       <Text fontSize={'12px'}>Unable to load user data.</Text>
+    //     </div>
+    //   );
+    // }
+    if (isAuthenticated && user) {
+        return (
+
+    <Stack
+    flex={{ base: 1, md: 0 }}
+    justify={'flex-end'}
+    direction={'row'}
+    spacing={6}>
+      <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={'full'}
+                  variant={'link'}
+                  cursor={'pointer'}
+                  minW={0}>
+                  <Avatar
+                    size={'sm'}
+                    src={user?.picture}
+                  />
+                </MenuButton>
+                <MenuList alignItems={'center'}>
+                  <br />
+                  <Center>
+                    <Avatar
+                      size={'xl'}
+                      src={user?.picture}
+                    />
+                  </Center>
+                  <Center>
+                    <Text mt={2} fontSize={'20px'} fontWeight={600}>{user?.firstName}</Text>
+                  </Center>
+                  <MenuDivider />
+                  <MenuItem as={'a'} href={'/dashboard'} justifyContent={'center'} fontSize={'18px'} >Profile</MenuItem>
+                  <MenuItem justifyContent={'center'} fontSize={'18px'}  onClick={logout}>Logout</MenuItem>
+                </MenuList>
+              </Menu>
+
+    </Stack>
+        );
+      }
+  
+  return (
+    <>
+    <Stack
+          flex={{ base: 1, md: 0 }}
+          justify={'flex-end'}
+          direction={'row'}
+          spacing={6}>
+          
+          <Button
+            as={'a'}
+            fontSize={'sm'}
+            fontWeight={600}
+            color={'white'}
+            bg={'pink.400'}
+            href={'#'}
+            onClick={clientLogin}
+            _hover={{
+              bg: 'pink.400',
+            }}>
+            Login
+          </Button>
+        </Stack>
+    </>
+  );
+    };
+
+
 
   return (
     <Box>
@@ -60,28 +157,7 @@ export default function Navbar() {
           </Flex>
         </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={'flex-end'}
-          direction={'row'}
-          spacing={6}>
-          {/* <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
-            Sign In
-          </Button> */}
-          <Button
-            as={'a'}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            href={'#'}
-            _hover={{
-              bg: 'pink.300',
-            }}>
-            Login
-          </Button>
-        </Stack>
+        {renderLoginState()}
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
@@ -126,8 +202,13 @@ const DesktopNav = () => {
                 rounded={'xl'}
                 minW={'sm'}>
                 <Stack>
+                
                   {navItem.children.map((child) => (
+                    <>
                     <DesktopSubNav key={child.label} {...child} />
+                    
+                    </>
+                    
                   ))}
                 </Stack>
               </PopoverContent>
@@ -151,6 +232,9 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
       _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}>
       <Stack direction={'row'} align={'center'}>
         <Box>
+        <Badge variant='solid' colorScheme='green'>
+                    coming soon
+          </Badge>
           <Text
             transition={'all .3s ease'}
             _groupHover={{ color: 'pink.400' }}
@@ -159,6 +243,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
           </Text>
           <Text fontSize={'sm'}>{subLabel}</Text>
         </Box>
+        
         <Flex
           transition={'all .3s ease'}
           transform={'translateX(-10px)'}
@@ -245,30 +330,19 @@ const NAV_ITEMS: Array<NavItem> = [
     children: [
       {
         label: 'API Reference',
-        subLabel: 'Trending Design to inspire you',
+        subLabel: 'Use our API',
         href: '#',
       },
       {
         label: 'Developers',
-        subLabel: 'Up-and-coming Designers',
+        subLabel: 'Build on Memora',
         href: '#',
       },
     ],
   },
   {
     label: 'Mission',
-    children: [
-      {
-        label: 'Job Board',
-        subLabel: 'Find your dream design job',
-        href: '#',
-      },
-      {
-        label: 'Freelance Projects',
-        subLabel: 'An exclusive list for contract work',
-        href: '#',
-      },
-    ],
+   
   },
   {
     label: 'What we do',
