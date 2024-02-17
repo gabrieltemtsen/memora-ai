@@ -23,7 +23,7 @@ const Multistep = () => {
   const [progress, setProgress] = useState(33.33);
 
   // Form state to hold collected data
-  const [formData, setFormData] = useState<User>({
+  const [formData, setFormData] = useState<any>({
     firstName: '',
     lastName: '',
     email: '',
@@ -60,9 +60,20 @@ const Multistep = () => {
 
   const handleSubmit = () => {
     // Check if any field is empty
-    const emptyFields = Object.keys(formData).filter(key => !formData[key]);
-  
-    // If there are empty fields, display a toast message
+    interface User {
+      firstName: string;
+      lastName: string;
+      email: string;
+      visibility: string;
+      country: string;
+      streetAddress: string;
+      city: string;
+      postalCode: string;
+      about: string;
+      [key: string]: string; // Add index signature
+    }
+
+    const emptyFields = Object.keys(formData).filter((key:any) => !formData[key]);    // If there are empty fields, display a toast message
     if (emptyFields.length > 0) {
       toast({
         title: 'Form submission failed.',
