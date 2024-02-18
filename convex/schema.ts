@@ -2,7 +2,14 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-
+  conversations: defineTable({
+    userId: v.string(),
+    conversation: v.array(v.object({
+        sender: v.string(),
+        message: v.string(),
+    })),
+}),
+ 
   users: defineTable({
     firstName: v.string(),
     lastName: v.string(),

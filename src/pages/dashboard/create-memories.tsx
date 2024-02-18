@@ -7,6 +7,7 @@ import { useAction, useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import { useAuthentication } from '@/lib/hooks/use-authentication'
 import { UserInfo } from '@/types/types'
+import { set } from 'lodash'
 
 
 
@@ -16,11 +17,14 @@ const CreateMemories = () => {
         const { user, isAuthenticated, isLoading, userId } = useAuthentication();
 
         const data: any = useQuery(api.users.getUser, { did: userId ?? '' });
-        const [userData, setUserData] = useState<any>();
-        const [renderDelay, setRenderDelay] = useState(true);
+        const convos: any = useQuery(api.conversations.getConversations, { userId: data?._id });
+         const [renderDelay, setRenderDelay] = useState(true);
                 const conversation = [
             { sender: 'AI', message: 'That is awesome. I think our users will really appreciate the improvements.' },
+            { sender: 'User', message: 'Thank you! I\'m glad you like it.' },
+            { sender: 'AI', message: 'Thank you! I\'m glad you like it.' },
             { sender: 'User', message: 'Thank you! I\'m glad you like it.' }
+
         ];
         const [userInput, setUserInput] = useState('');
 
@@ -28,11 +32,15 @@ const CreateMemories = () => {
             setUserInput(e.target.value);
         };
 
+      
+
+
         const chatWithAI = useAction(api.openai.chatWithAI);
 
         const sendMessage = async () => {
+
             console.log('Sending message to AI');
-            const chat = await chatWithAI({ text: userInput, userInfo: JSON.stringify(user)});
+            const chat = await chatWithAI({ userMessage: userInput, userInfo: JSON.stringify(user), userId: data?._id}, );
             console.log(chat);
             setUserInput('');
         };
@@ -42,7 +50,8 @@ const CreateMemories = () => {
         useEffect(() => {
             const timer = setTimeout(() => {
                 setRenderDelay(false);
-            }, 2500); 
+            }, 2700); 
+           
     
             return () => clearTimeout(timer);
         }, []);
@@ -70,7 +79,7 @@ const CreateMemories = () => {
           </BreadcrumbItem>
         </Breadcrumb>
 
-        {data && data.length > 0 ? (
+        {data ? (
     <>
         <Box mb={5} display={'flex'} alignContent={'center'} alignItems={'center'} flexDirection={'column'} justifyContent={'center'}>
             <Heading fontSize={'24px'}>
@@ -82,7 +91,7 @@ const CreateMemories = () => {
         </Box>
 
         <Box maxW={'1300px'} mb={1} maxH={'600px'} overflowY={'auto'} p={3} m={1}>
-            {conversation.map((msg, index) => (
+        {convos.conversation.map((msg: any, index: any) => (
                 <Flex key={index} mb={9} justifyContent={msg.sender === 'AI' ? 'flex-start' : 'flex-end'}>
                     <Avatar name={msg.sender} src={`https://bit.ly/${msg.sender.toLowerCase()}`} />
                     <Box ml={3} mr={3} maxW={['70%', '320px']} p={4} borderWidth="1px" bg={msg.sender === 'AI' ? 'gray.500' : 'gray.300'} rounded="xl">

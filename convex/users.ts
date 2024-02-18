@@ -70,10 +70,12 @@ export const store = mutation({
 export const getUser = query({
     args: { did: v.string() },
     handler: async (ctx, args) => {
-      const user = await ctx.db
+      const user =  await ctx.db
         .query("users")
         .filter((q) => q.eq(q.field("did"), args.did))
         .collect();
-      return user;
+        return user[0];
+    
+
     },
   });
