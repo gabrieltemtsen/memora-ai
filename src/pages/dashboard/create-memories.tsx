@@ -3,7 +3,7 @@ import SidebarWithHeader from './layout'
 import { Box,Text, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Heading, Button, Tooltip, Link, FormControl, FormLabel, Avatar, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
 import Multistep from '@/components/MultiStepForm'
-import { useQuery } from 'convex/react'
+import { useAction, useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import { useAuthentication } from '@/lib/hooks/use-authentication'
 import { UserInfo } from '@/types/types'
@@ -16,13 +16,29 @@ const CreateMemories = () => {
         const { user, isAuthenticated, isLoading, userId } = useAuthentication();
 
         const data: any = useQuery(api.users.getUser, { did: userId ?? '' });
-        console.log('data', data)
         const [userData, setUserData] = useState<any>();
         const [renderDelay, setRenderDelay] = useState(true);
                 const conversation = [
             { sender: 'AI', message: 'That is awesome. I think our users will really appreciate the improvements.' },
             { sender: 'User', message: 'Thank you! I\'m glad you like it.' }
         ];
+        const [userInput, setUserInput] = useState('');
+
+        const handleUserInput = (e: any) => {
+            setUserInput(e.target.value);
+        };
+
+        const chatWithAI = useAction(api.openai.chatWithAI);
+
+        const sendMessage = async () => {
+            console.log('Sending message to AI');
+            const chat = await chatWithAI({ text: userInput, userInfo: JSON.stringify(user)});
+            console.log(chat);
+            setUserInput('');
+        };
+
+
+
         useEffect(() => {
             const timer = setTimeout(() => {
                 setRenderDelay(false);
@@ -96,9 +112,11 @@ const CreateMemories = () => {
                             className="flex-grow px-4 py-2.5 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Your message..."
                             style={{ resize: 'none' }}
+                            onChange={handleUserInput}
                         ></textarea>
                         <button
                             type="submit"
+                            onClick={sendMessage}
                             className="p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600"
                         >
                             <svg
