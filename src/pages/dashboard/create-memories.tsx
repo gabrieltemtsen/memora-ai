@@ -1,19 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SidebarWithHeader from './layout'
 import { Box,Text, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Heading, Button, Tooltip, Link, FormControl, FormLabel, Avatar, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
 import Multistep from '@/components/MultiStepForm'
+import { useQuery } from 'convex/react'
+import { api } from '../../../convex/_generated/api'
+import { useAuthentication } from '@/lib/hooks/use-authentication'
+import { UserInfo } from '@/types/types'
 
 
 
 
 
 const CreateMemories = () => {
-    const [onBoarded, setOnboarded] = React.useState(false);
-    const conversation = [
-      { sender: 'AI', message: 'That is awesome. I think our users will really appreciate the improvements.' },
-      { sender: 'User', message: 'Thank you! I\'m glad you like it.' }
-  ];
+        const { user, isAuthenticated, isLoading, userId } = useAuthentication();
+
+        const data: any = useQuery(api.users.getUser, { did: userId ?? '' });
+        const [userData, setUserData] = useState<any>();
+        const [onBoarded, setOnboarded] = React.useState(false);
+        const conversation = [
+            { sender: 'AI', message: 'That is awesome. I think our users will really appreciate the improvements.' },
+            { sender: 'User', message: 'Thank you! I\'m glad you like it.' }
+        ];
+        
     return (
         <SidebarWithHeader>
           <Breadcrumb>
@@ -28,10 +37,10 @@ const CreateMemories = () => {
     
         <Box mt={4} as={'section'}>
                 {/* Render the multi-step form if onboarded state is false */}
-                {!onBoarded && Multistep()}
+                {data?.length === 0 && Multistep()}
         </Box>
 
-       {onBoarded && (
+       {data?.length !==0 && (
         <>
          <Box mb={5} display={'flex'} alignContent={'center'} alignItems={'center'} flexDirection={'column'} justifyContent={'center'}>
             <Heading fontSize={'24px'}>

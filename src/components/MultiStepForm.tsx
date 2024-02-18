@@ -15,12 +15,15 @@ import {
 } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 import { useAuthentication } from '@/lib/hooks/use-authentication';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 
 const Multistep = () => {
-  const { user, isAuthenticated, isLoading } = useAuthentication();
+  const { user, isAuthenticated, isLoading, userId } = useAuthentication();
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
+  const mutation = useMutation(api.users.store);
 
   // Form state to hold collected data
   const [formData, setFormData] = useState<any>({
@@ -33,6 +36,9 @@ const Multistep = () => {
     city: '',
     postalCode: '',
     about: '',
+    did: '',
+    birthdate: '',
+    phoneNumber: '',
   });
 
   useEffect(() => {
@@ -48,9 +54,12 @@ const Multistep = () => {
         city: user.city || '',
         postalCode: user.postalCode || '',
         about: '',
+        did: userId || '',
+        birthdate: user.birthdate || '',
+        phoneNumber: user.phoneNumber || '',
       });
     }
-  }, [user]);
+  }, [user, userId]);
 
   // Function to handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -58,7 +67,7 @@ const Multistep = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Check if any field is empty
     interface User {
       firstName: string;
@@ -83,16 +92,21 @@ const Multistep = () => {
         isClosable: true,
       });
     } else {
-      // All fields are filled, proceed with form submission
       console.log(formData);
+
+      const sendData =  await mutation({ userInfo: formData });
+      if (sendData) {
+        console.log(sendData);
+        toast({
+          title: 'Form submitted.',
+          description: 'Data collected from the form.',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
   
-      toast({
-        title: 'Form submitted.',
-        description: 'Data collected from the form.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
+      
     }
   };
 

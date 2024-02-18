@@ -34,7 +34,7 @@ import { signOut } from 'next-auth/react';
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure()
-  const { user, isAuthenticated, isLoading } = useAuthentication();
+  const { user, isAuthenticated, isLoading, userId } = useAuthentication();
   const logout = async() => {
     await signOut();
   };
