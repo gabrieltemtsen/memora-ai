@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import SidebarWithHeader from './layout'
 import { Box,Text, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Heading, Button, Tooltip, Link, FormControl, FormLabel, Avatar, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
@@ -28,6 +28,16 @@ const CreateMemories = () => {
         ];
         const [userInput, setUserInput] = useState('');
 
+        const messagesEndRef = useRef<any>(null);
+
+        const scrollToBottom = () => {
+          messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        };
+      
+        useEffect(() => {
+          scrollToBottom();
+        }, [userInput, convos?.conversation]);
+
         const handleUserInput = (e: any) => {
             setUserInput(e.target.value);
         };
@@ -41,9 +51,16 @@ const CreateMemories = () => {
 
             console.log('Sending message to AI');
             const chat = await chatWithAI({ userMessage: userInput, userInfo: JSON.stringify(user), userId: data?._id}, );
+            setUserInput(' ');
             console.log(chat);
-            setUserInput('');
         };
+
+        const handleKeyDown = (event: any) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+              event.preventDefault(); // Prevent new line
+              sendMessage();
+            }
+          };
 
 
 
@@ -93,15 +110,17 @@ const CreateMemories = () => {
         <Box maxW={'1300px'} mb={1} maxH={'600px'} overflowY={'auto'} p={3} m={1}>
         {convos.conversation.map((msg: any, index: any) => (
                 <Flex key={index} mb={9} justifyContent={msg.sender === 'AI' ? 'flex-start' : 'flex-end'}>
-                    <Avatar name={msg.sender} src={`https://bit.ly/${msg.sender.toLowerCase()}`} />
+                    <Avatar name={msg.sender === 'AI' ? 'Memora AI': user?.firstName} src={msg.sender === 'AI' ? 'https://shorturl.at/dAEP3': user?.picture} />
                     <Box ml={3} mr={3} maxW={['70%', '320px']} p={4} borderWidth="1px" bg={msg.sender === 'AI' ? 'gray.500' : 'gray.300'} rounded="xl">
                         <Flex justify="space-between" alignItems="center" mb={2}>
-                            <span className="text-sm font-semibold text-gray-900">{msg.sender}</span>
+                            <span className="text-sm font-semibold text-gray-900">{msg.sender === 'AI' ? 'Memora AI': user?.firstName}</span>
                         </Flex>
                         <p className="text-sm font-normal py-2.5 text-gray-900">{msg.message}</p>
                     </Box>
                 </Flex>
+                
             ))}
+            <div ref={messagesEndRef} />
             {/* Chat input */}
             <Box
                 bottom={4}
@@ -126,6 +145,7 @@ const CreateMemories = () => {
                         <button
                             type="submit"
                             onClick={sendMessage}
+                            onKeyDown={handleKeyDown}
                             className="p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600"
                         >
                             <svg
