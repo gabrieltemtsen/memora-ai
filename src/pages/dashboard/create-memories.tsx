@@ -16,12 +16,31 @@ const CreateMemories = () => {
         const { user, isAuthenticated, isLoading, userId } = useAuthentication();
 
         const data: any = useQuery(api.users.getUser, { did: userId ?? '' });
+        console.log('data', data)
         const [userData, setUserData] = useState<any>();
-        const [onBoarded, setOnboarded] = React.useState(false);
-        const conversation = [
+        const [renderDelay, setRenderDelay] = useState(true);
+                const conversation = [
             { sender: 'AI', message: 'That is awesome. I think our users will really appreciate the improvements.' },
             { sender: 'User', message: 'Thank you! I\'m glad you like it.' }
         ];
+        useEffect(() => {
+            const timer = setTimeout(() => {
+                setRenderDelay(false);
+            }, 2500); 
+    
+            return () => clearTimeout(timer);
+        }, []);
+    
+        if (renderDelay) {
+           return (
+                <SidebarWithHeader>
+                     <Box>
+                          Loading please wait...
+                     </Box>
+                </SidebarWithHeader>
+           )
+        }
+    
         
     return (
         <SidebarWithHeader>
@@ -34,15 +53,10 @@ const CreateMemories = () => {
             <BreadcrumbLink href='#'>Create Memories</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
-    
-        <Box mt={4} as={'section'}>
-                {/* Render the multi-step form if onboarded state is false */}
-                {data?.length === 0 && Multistep()}
-        </Box>
 
-       {data?.length !==0 && (
-        <>
-         <Box mb={5} display={'flex'} alignContent={'center'} alignItems={'center'} flexDirection={'column'} justifyContent={'center'}>
+        {data && data.length > 0 ? (
+    <>
+        <Box mb={5} display={'flex'} alignContent={'center'} alignItems={'center'} flexDirection={'column'} justifyContent={'center'}>
             <Heading fontSize={'24px'}>
                 Memora-AI
             </Heading>
@@ -102,9 +116,14 @@ const CreateMemories = () => {
                 </FormControl>
             </Box>
         </Box>
-        </>
-       )}        
-          
+    </>
+) : (
+    <Multistep />
+)}
+    
+      
+
+      
     
         </SidebarWithHeader>
       )
