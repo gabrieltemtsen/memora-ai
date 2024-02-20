@@ -187,7 +187,7 @@ const Multistep = () => {
         ) : step === 2 ? (
           <>
             <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
-              User Details
+              Your Details
             </Heading>
             <FormControl>
               <FormLabel htmlFor="country" fontWeight={'normal'}>

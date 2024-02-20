@@ -19,7 +19,6 @@ const CreateMemories = () => {
 
         const data: any = useQuery(api.users.getUser, { did: userId ?? '' });
         const convos: any = useQuery(api.conversations.getConversations, { userId: data?._id });
-        console.log(data)
          const [renderDelay, setRenderDelay] = useState(true);
         const [userInput, setUserInput] = useState('');
 
@@ -33,9 +32,7 @@ const CreateMemories = () => {
           scrollToBottom();
         }, [userInput, convos?.conversation]);
 
-        const handleUserInput = (e: any) => {
-            setUserInput(e.target.value);
-        };
+       
 
       
 
@@ -46,7 +43,7 @@ const CreateMemories = () => {
 
             console.log('Sending message to AI');
             const chat = await chatWithAI({ userMessage: userInput, userInfo: JSON.stringify(user), userId: data?._id}, );
-            setUserInput(' ');
+            setUserInput('');
             console.log(chat);
         };
 
@@ -57,6 +54,10 @@ const CreateMemories = () => {
             }
           };
 
+          useEffect(() => {
+           
+           
+        }, [userInput]);
 
 
         useEffect(() => {
@@ -152,13 +153,18 @@ const CreateMemories = () => {
                     className="flex-grow px-4 py-2.5 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Your message..."
                     style={{ resize: 'none' }}
-                    onChange={handleUserInput}
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
                 ></textarea>
                 <button
                     type="submit"
                     onClick={sendMessage}
+                    disabled={!userInput}
                     onKeyDown={handleKeyDown}
                     className="p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600"
+                    
+                    
+                    
                 >
                     <svg
                         className="w-5 h-5 rotate-90 rtl:-rotate-90"
