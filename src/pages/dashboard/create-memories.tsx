@@ -15,6 +15,7 @@ import { set } from 'lodash'
 
 const CreateMemories = () => {
         const { user, isAuthenticated, isLoading, userId } = useAuthentication();
+       
 
         const data: any = useQuery(api.users.getUser, { did: userId ?? '' });
         const convos: any = useQuery(api.conversations.getConversations, { userId: data?._id });
@@ -73,15 +74,34 @@ const CreateMemories = () => {
             return () => clearTimeout(timer);
         }, []);
     
-        if (renderDelay) {
-           return (
+        if (isLoading || renderDelay) {
+            return (
                 <SidebarWithHeader>
-                     <Box>
-                          Loading please wait...
-                     </Box>
+                    <Box>
+                        Loading, please wait...
+                    </Box>
                 </SidebarWithHeader>
-           )
+            );
         }
+    
+        if (!isAuthenticated || !data || !convos) {
+            return (
+                <SidebarWithHeader>
+                    <Breadcrumb>
+          <BreadcrumbItem>
+            <BreadcrumbLink href='#'>Memora-AI</BreadcrumbLink>
+          </BreadcrumbItem>
+    
+          <BreadcrumbItem isCurrentPage>
+            <BreadcrumbLink href='#'>Create Memories</BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
+                    <Multistep />
+                </SidebarWithHeader>
+            );
+        }
+    
+        
     
         
     return (
@@ -96,7 +116,6 @@ const CreateMemories = () => {
           </BreadcrumbItem>
         </Breadcrumb>
 
-        {data ? (
     <>
         <Box mb={5} display={'flex'} alignContent={'center'} alignItems={'center'} flexDirection={'column'} justifyContent={'center'}>
             <Heading fontSize={'24px'}>
@@ -164,9 +183,7 @@ const CreateMemories = () => {
             </Box>
         </Box>
     </>
-) : (
-    <Multistep />
-)}
+
     
       
 

@@ -30,7 +30,7 @@ export default function index ()  {
 
     <Box mt={4} as={'section'}>
 
-      <Heading>Welcome Gabriel</Heading>
+      <Heading>Welcome {user?.firstName}</Heading>
 
       <Box display={'flex'} flexDirection={'column'} mt={10} p={'4px'}>
         <Text>
