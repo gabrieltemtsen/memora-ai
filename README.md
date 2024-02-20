@@ -1,40 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Memora-AI: Bringing Memories to Life with Affinidi Integration
 
-## Getting Started
+Memora-AI is a groundbreaking platform designed to preserve memories and create virtual connections with loved ones even after they pass away. By leveraging Affinidi Vault's secure data storage and authentication features, Memora-AI offers users a seamless experience, automatically fetching their data from the vault with their consent. 
 
-First, run the development server:
+## Technologies Used
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Affinidi Login**: Used for authentication, Affinidi Login ensures a secure and hassle-free login process for Memora-AI users. With its vault features, users can trust that their data remains protected at all times.
+  
+- **Convex**: Powering the backend and database services, Convex ensures the reliability and efficiency of Memora-AI's operations.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **OpenAI**: Leveraging OpenAI's powerful AI models, Memora-AI creates virtual representations of users, capturing their memories and personalities with unparalleled accuracy.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## How to Use Memora-AI
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+1. **Login**: Visit the Memora-AI website and click on the login button. You'll be directed to authenticate using Affinidi Login. If you don't have the Affinidi extension, kindly install it and fill in your data in the vault.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+2. **Dashboard**: Once logged in, navigate to your dashboard. From there, you can choose to create memories or converse with the AI.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. **Create Memories**: Click on "Create Memories" to join the Memora-AI program for creating an AI presence. Fill out the form to provide essential information, allowing the AI to compile your memories accurately.
 
-## Learn More
+4. **Converse with AI**: Engage with the AI to further refine your virtual representation. Share your experiences, preferences, and memories to create a lifelike AI version of yourself.
 
-To learn more about Next.js, take a look at the following resources:
+Memora-AI revolutionizes the way we preserve memories and connect with our loved ones. Experience the power of technology to keep cherished memories alive with Memora-AI.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Thank you for considering Memora-AI. We're excited to embark on this journey of preserving memories and creating virtual connections that transcend time and space.
