@@ -68,13 +68,17 @@ export const store = mutation({
   }
 });
 export const getUser = query({
-    args: { did: v.string() },
+    args: { did: v.optional(v.string()) },
     handler: async (ctx, args) => {
-      const user =  await ctx.db
+     if(args.did){
+        const user = await ctx.db
         .query("users")
         .filter((q) => q.eq(q.field("did"), args.did))
-        .collect();
-        return user[0];
+        .unique();
+        return user;
+     } else {
+         return null;
+     }
     
 
     },

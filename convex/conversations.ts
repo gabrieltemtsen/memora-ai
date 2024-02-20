@@ -25,24 +25,30 @@ export const createOrUpdateConversation = internalMutation({
 });
 
 export const getConversation = internalQuery({
-  args: { userId: v.id("users") },
+  args: { userId: v.optional(v.id("users")) },
   handler: async (ctx, args) => {
+   if (args.userId) {
     const conversation = await ctx.db
       .query("conversations")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .collect();
-    
     return conversation.length > 0 ? conversation[0] : null;
+   }else {
+     return null;
+   }
   },
 });
 export const getConversations = query({
-    args: { userId: v.id("users") },
+    args: { userId: v.optional(v.id("users")) },
     handler: async (ctx, args) => {
-      const conversation = await ctx.db
+    if (args.userId) {
+        const conversation = await ctx.db
         .query("conversations")
         .filter((q) => q.eq(q.field("userId"), args.userId))
         .collect();
-      
-      return conversation.length > 0 ? conversation[0] : null;
+        return conversation.length > 0 ? conversation[0] : null;
+    }else {
+        return null;  
+    }
     },
   });
