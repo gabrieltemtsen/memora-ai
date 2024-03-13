@@ -20,6 +20,9 @@ Memora-AI is a groundbreaking platform designed to preserve memories and create 
 
 4. **Converse with AI**: Engage with the AI to further refine your virtual representation. Share your experiences, preferences, and memories to create a lifelike AI version of yourself.
 
+
+
+
 Memora-AI revolutionizes the way we preserve memories and connect with our loved ones. Experience the power of technology to keep cherished memories alive with Memora-AI.
 
 Thank you for considering Memora-AI. We're excited to embark on this journey of preserving memories and creating virtual connections that transcend time and space.

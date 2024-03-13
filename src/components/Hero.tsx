@@ -51,7 +51,7 @@ export default function Hero() {
               Beyond Life!
             </Text>
           </Heading>
-          <Text color={'gray.500'}>
+          <Text color={'gray.300'}>
           We preserve and share important memories
            across generations. we provide an immersive trip for both users who wish to develop
             their Ai presence beyond death, leaving a lasting legacy, and users who want to commune

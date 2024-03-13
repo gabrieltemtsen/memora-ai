@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <Box maxW={'1400px'} marginX={'auto'} mt={'5px'}>
+    <Box minH={'100%'} maxW={'1400px'} marginX={'auto'} mt={'7px'}>
       <Navbar />
 
       <Hero />

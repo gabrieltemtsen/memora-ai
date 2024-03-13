@@ -21,6 +21,15 @@ import {
   MenuItem,
   MenuList,
   Badge,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  HStack,
+  Spinner,
 } from '@chakra-ui/react'
 import {
   HamburgerIcon,
@@ -31,12 +40,25 @@ import {
 import { clientLogin } from '@/lib/auth/client-login'
 import { useAuthentication } from '@/lib/hooks/use-authentication';
 import { signOut } from 'next-auth/react';
+import { useAuth0 } from "@auth0/auth0-react";
+import { useState } from 'react';
+
 
 export default function Navbar() {
-  const { isOpen, onToggle } = useDisclosure()
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
+  const { loginWithRedirect } = useAuth0();
+  const [loading, setLoading] = useState(false);
+
+  const loginwithAffinidi = async () => {
+    setLoading(true);
+    await clientLogin();
+    setLoading(false);
+  }
+
   const { user, isAuthenticated, isLoading, userId } = useAuthentication();
-  const logout = async() => {
+  const Logout = async() => {
     await signOut();
+
   };
 
   const renderLoginState = () => {
@@ -85,7 +107,7 @@ export default function Navbar() {
                   </Center>
                   <MenuDivider />
                   <MenuItem as={'a'} href={'/dashboard'} justifyContent={'center'} fontSize={'18px'} >Profile</MenuItem>
-                  <MenuItem justifyContent={'center'} fontSize={'18px'}  onClick={logout}>Logout</MenuItem>
+                  <MenuItem justifyContent={'center'} fontSize={'18px'}  onClick={Logout}>Logout</MenuItem>
                 </MenuList>
               </Menu>
 
@@ -101,19 +123,51 @@ export default function Navbar() {
           direction={'row'}
           spacing={6}>
           
-          <Button
+          <Button  bg={'pink.400'} onClick={onOpen}>Login</Button>
+
+          <Modal onClose={onClose} isOpen={isOpen} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Login / Sign up</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+        <HStack>
+        <Button
             as={'a'}
-            fontSize={'sm'}
+            fontSize={'md'}
             fontWeight={600}
             color={'white'}
             bg={'pink.400'}
             href={'#'}
-            onClick={clientLogin}
+            onClick={loginwithAffinidi}
             _hover={{
               bg: 'pink.400',
             }}>
-            Login
+           {loading ? <Spinner />: 'Continue with Affinidi'}
           </Button>
+          <Button
+          isDisabled
+            as={'a'}
+            fontSize={'md'}
+            size={'md'}
+            fontWeight={600}
+            color={'white'}
+            bg={'blue.400'}
+            href={'#'}
+            onClick={() => {return}}
+            _hover={{
+              bg: 'blue.400',
+            }}>
+            Continue with Email
+          </Button>
+
+        </HStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={onClose}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
         </Stack>
     </>
   );
@@ -163,6 +217,8 @@ export default function Navbar() {
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
       </Collapse>
+
+      
     </Box>
   )
 }
@@ -340,14 +396,14 @@ const NAV_ITEMS: Array<NavItem> = [
       },
     ],
   },
-  {
-    label: 'Mission',
+  // {
+  //   label: 'Mission',
    
-  },
-  {
-    label: 'What we do',
-    href: '#',
-  },
+  // },
+  // {
+  //   label: 'What we do',
+  //   href: '#',
+  // },
 //   {
 //     label: 'Hire Designers',
 //     href: '#',
