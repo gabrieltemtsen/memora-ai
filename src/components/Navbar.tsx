@@ -134,7 +134,7 @@ export default function Navbar() {
         <HStack>
         <Button
             as={'a'}
-            fontSize={'md'}
+            fontSize={'sm'}
             fontWeight={600}
             color={'white'}
             bg={'pink.400'}
