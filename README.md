@@ -1,14 +1,14 @@
-# Memora-AI: Bringing Memories to Life with Affinidi Integration
+# Memora-AI: Bringing Memories to Life 
 
-Memora-AI is a groundbreaking platform designed to preserve memories and create virtual connections with loved ones even after they pass away. By leveraging Affinidi Vault's secure data storage and authentication features, Memora-AI offers users a seamless experience, automatically fetching their data from the vault with their consent. 
+Memora-AI is a groundbreaking platform designed to preserve memories and create virtual connections with loved ones even after they pass away. By leveraging Affinidi Vault's secure data storage and authentication features with Convex Dev's amazing backend and DB integration, Memora-AI offers users a seamless experience, automatically fetching their data from the vault with their consent. 
 
 ## Technologies Used
 
-- **Affinidi Login**: Used for authentication, Affinidi Login ensures a secure and hassle-free login process for Memora-AI users. With its vault features, users can trust that their data remains protected at all times.
+- **Affinidi Login**: [Affinidi](https://docs.affinidi.com/docs/) was used for authentication, Affinidi Login ensures a secure and hassle-free login process for Memora-AI users. With its vault features, users can trust that their data remains protected at all times.
   
-- **Convex**: Powering the backend and database services, Convex ensures the reliability and efficiency of Memora-AI's operations.
+- **Convex Dev**: [Convex](https://docs.convex.dev/home) was used in Powering the backend and database services, Convex ensures the reliability and efficiency of Memora-AI's operations.
 
-- **OpenAI**: Leveraging OpenAI's powerful AI models, Memora-AI creates virtual representations of users, capturing their memories and personalities with unparalleled accuracy.
+- **OpenAI**: Leveraging [OpenAI's](https://platform.openai.com/docs/introduction) powerful AI models, Memora-AI creates virtual representations of users, capturing their memories and personalities with unparalleled accuracy.
 
 ## How to Use Memora-AI
 
