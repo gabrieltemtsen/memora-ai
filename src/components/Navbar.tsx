@@ -387,7 +387,7 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'API Reference',
         subLabel: 'Use our API',
-        href: '#',
+        href: 'https://github.com/gabrieltemtsen/memora-ai',
       },
       {
         label: 'Developers',
